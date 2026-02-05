@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mohona protal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+Da+2:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./styel.css"> 
+</head>
+
+<body> 
+    <div id="app-container">
+        
+        <div id="popup-dialog" class="popup-dialog">
+            <div class="popup-content">
+                <i class="fas fa-times close-btn" onclick="closePopup()"></i>
+                <h3 id="popup-title"></h3>
+                <p id="popup-message"></p>
+                <button class="btn btn-green" onclick="closePopup()">বন্ধ করুন</button>
+            </div>
+        </div>
+        
+        <div id="entry-page" class="page active">
+            <header class="main-header entry-header">
+                <div class="search-bar-entry">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search doctors, hospitals, clinics...">
+                </div>
+            </header>
+            <div class="container entry-container" style="text-align: center;">
+                <h1 class="welcome-text">স্বাস্থ্য সেবা পোর্টালে স্বাগতম</h1>
+                <div class="button-group">
+                    <a href="#" class="btn btn-green" onclick="showPage('visit-page')">
+                        <i class="fas fa-globe"></i> Website visit
+                    </a>
+                    <a href="#" class="btn btn-blue" onclick="showPage('data-entry-login-page')"> 
+                        <i class="fas fa-user-shield"></i> Data Entry
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="data-entry-login-page" class="page data-entry-login-layout">
+            <div class="login-container">
+                <a href="#" onclick="showPage('entry-page')" class="back-to-home-btn"><i class="fas fa-arrow-left"></i> এন্ট্রি পেজে ফিরে যান</a>
+
+                <div class="auth-box">
+                    <h2 class="auth-title">ডেটা এন্ট্রি পোর্টালে লগইন</h2>
+                    
+                    <form id="data-entry-login-form" class="auth-form active" onsubmit="dataEntryLogin(event)">
+                        <div class="input-group">
+                            <label for="data-entry-username"><i class="fas fa-user"></i> ইউজারনেম (Username)</label>
+                            <input type="text" id="data-entry-username" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="data-entry-password"><i class="fas fa-lock"></i> পাসওয়ার্ড (Password)</label>
+                            <input type="password" id="data-entry-password" required>
+                        </div>
+                        <p id="login-error-message" class="error-message"></p>
+                        <button type="submit" class="auth-submit-btn btn-blue">প্রবেশ করুন</button>
+                    </form>
+                    
+                    <button class="btn btn-green" onclick="showPage('password-reset-page')" style="width: 100%; margin-top: 15px;">পাসওয়ার্ড পরিবর্তন করুন</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="password-reset-page" class="page data-entry-login-layout">
+            <div class="login-container">
+                <a href="#" onclick="showPage('data-entry-login-page')" class="back-to-home-btn"><i class="fas fa-arrow-left"></i> লগইন পেজে ফিরে যান</a>
+                <div class="auth-box">
+                    <h2 class="auth-title">পাসওয়ার্ড পরিবর্তন</h2>
+                    
+                    <form id="password-reset-form" class="auth-form active" onsubmit="changeDataEntryPassword(event)">
+                        <div class="input-group">
+                            <label for="current-password"><i class="fas fa-unlock"></i> বর্তমান পাসওয়ার্ড</label>
+                            <input type="password" id="current-password" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="new-username"><i class="fas fa-user-edit"></i> নতুন ইউজারনেম (ঐচ্ছিক)</label>
+                            <input type="text" id="new-username">
+                        </div>
+                        <div class="input-group">
+                            <label for="new-password"><i class="fas fa-key"></i> নতুন পাসওয়ার্ড</label>
+                            <input type="password" id="new-password" required>
+                        </div>
+                        <p id="reset-error-message" class="error-message"></p>
+                        <p id="reset-success-message" class="success-message"></p>
+                        <button type="submit" class="auth-submit-btn btn-green">পরিবর্তন সংরক্ষণ করুন</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div id="data-entry-dashboard-page" class="page data-entry-dashboard-layout">
+            <header class="main-header fixed-navbar" style="position: relative;">
+                <div class="top-bar dark-bg">
+                    <div class="top-bar-inner" style="max-width: 100%;">
+                        <h2 style="color: white; font-size: 1.5rem;">🔐 ডেটা এন্ট্রি ড্যাশবোর্ড</h2>
+                        <a href="#" class="btn top-btn-right support-box-btn" onclick="showPage('data-entry-login-page')">
+                            <i class="fas fa-sign-out-alt"></i> লগআউট
+                        </a>
+                    </div>
+                </div>
+            </header>
+            <div class="data-entry-main-content">
+                <h1 class="welcome-text" style="font-size: 2rem; color: #1A237E; margin-bottom: 20px;">ডেটা এন্ট্রি পোর্টালে স্বাগতম</h1>
+                <p style="font-size: 1.1rem; color: #555; margin-bottom: 40px;">এটি একটি সুরক্ষিত স্থান। এখানে আপনি গুরুত্বপূর্ণ স্বাস্থ্য ডেটা এন্ট্রি, এডিট বা আপডেট করতে পারবেন।</p>
+                
+                <div class="data-entry-cards">
+                    <div class="card data-card" onclick="showPage('data-entry-doctor-page')">
+                        <i class="fas fa-user-plus"></i>
+                        <h3>ডাক্তার যোগ করুন</h3>
+                        <p>নতুন ডাক্তারের তথ্য প্রবেশ করান।</p>
+                    </div>
+                    <div class="card data-card" onclick="showPage('data-entry-hospital-page')">
+                        <i class="fas fa-hospital-alt"></i>
+                        <h3>হাসপাতাল এন্ট্রি</h3>
+                        <p>নতুন হাসপাতালের ডেটা আপডেট করুন।</p>
+                    </div>
+                    <div class="card data-card" onclick="showPage('data-entry-diagnostic-page')">
+                        <i class="fas fa-microscope"></i>
+                        <h3>ডায়াগনস্টিক ডেটা</h3>
+                        <p>পরীক্ষার মূল্য এবং বিবরণ আপডেট করুন।</p>
+                    </div>
+                    <div class="card data-card" onclick="showPage('doctor-report-generator-page')">
+                        <i class="fas fa-file-invoice-dollar"></i>
+                        <h3>ডাক্তার রিপোর্ট তৈরি করুন</h3>
+                        <p>দৈনিক ভিজিট ও পেমেন্ট তালিকা তৈরি এবং প্রিন্ট করুন।</p>
+                    </div>
+                </div>
+
+                <div class="important-note">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h3>গুরুত্বপূর্ণ নোট:</h3>
+                    <p>অনুগ্রহ করে নিশ্চিত করুন যে আপনি কোনো ডেটা সাবমিট করার আগে তা সঠিকভাবে যাচাই করেছেন। ভুল তথ্য ওয়েবসাইটের বিশ্বাসযোগ্যতা নষ্ট করতে পারে।</p>
+                </div>
+            </div>
+        </div>
+        
+        <div id="data-entry-doctor-page" class="page data-entry-form-layout">
+            <header class="data-entry-form-header">
+                <a href="#" onclick="showPage('data-entry-dashboard-page')" class="back-btn"><i class="fas fa-arrow-left"></i> ড্যাশবোর্ডে ফিরে যান</a>
+                <h1 class="form-title">👨‍⚕️ ডাক্তার যোগ করুন</h1>
+            </header>
+            <div class="data-entry-form-container">
+                <form id="doctor-entry-form" class="data-form" onsubmit="handleFormSubmission(event)">
+                    <div class="form-group">
+                        <label for="doctor-name">ডাক্তারের নাম:</label>
+                        <input type="text" id="doctor-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="doctor-specialty">বিশেষত্ব:</label>
+                        <input type="text" id="doctor-specialty" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="doctor-degree">শিক্ষাগত যোগ্যতা (Degree):</label>
+                        <input type="text" id="doctor-degree">
+                    </div>
+                    <div class="form-group">
+                        <label for="doctor-contact">যোগাযোগ নম্বর:</label>
+                        <input type="tel" id="doctor-contact">
+                    </div>
+                    <div class="form-group">
+                        <label for="doctor-hospital">বর্তমান হাসপাতাল/ক্লিনিক:</label>
+                        <input type="text" id="doctor-hospital">
+                    </div>
+                    <button type="submit" class="btn btn-green form-submit-btn">ডাক্তার ডেটা সেভ করুন</button>
+                    <p id="doctor-success-message" class="success-message" style="margin-top: 15px;"></p>
+                </form>
+            </div>
+        </div>
+
+        <div id="data-entry-hospital-page" class="page data-entry-form-layout">
+            <header class="data-entry-form-header">
+                <a href="#" onclick="showPage('data-entry-dashboard-page')" class="back-btn"><i class="fas fa-arrow-left"></i> ড্যাশবোর্ডে ফিরে যান</a>
+                <h1 class="form-title">🏥 হাসপাতাল এন্ট্রি</h1>
+            </header>
+            <div class="data-entry-form-container">
+                <form id="hospital-entry-form" class="data-form" onsubmit="handleFormSubmission(event)">
+                    <div class="form-group">
+                        <label for="hospital-name">হাসপাতালের নাম:</label>
+                        <input type="text" id="hospital-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="hospital-address">ঠিকানা:</label>
+                        <textarea id="hospital-address" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="hospital-contact">যোগাযোগ নম্বর:</label>
+                        <input type="tel" id="hospital-contact">
+                    </div>
+                    <div class="form-group">
+                        <label for="hospital-type">হাসপাতালের প্রকার:</label>
+                        <select id="hospital-type">
+                            <option value="private">বেসরকারি</option>
+                            <option value="government">সরকারি</option>
+                            <option value="clinic">ক্লিনিক</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-blue form-submit-btn">হাসপাতাল ডেটা সেভ করুন</button>
+                    <p id="hospital-success-message" class="success-message" style="margin-top: 15px;"></p>
+                </form>
+            </div>
+        </div>
+
+        <div id="data-entry-diagnostic-page" class="page data-entry-form-layout">
+            <header class="data-entry-form-header">
+                <a href="#" onclick="showPage('data-entry-dashboard-page')" class="back-btn"><i class="fas fa-arrow-left"></i> ড্যাশবোর্ডে ফিরে যান</a>
+                <h1 class="form-title">🔬 ডায়াগনস্টিক ডেটা এন্ট্রি</h1>
+            </header>
+            <div class="data-entry-form-container">
+                <form id="diagnostic-entry-form" class="data-form" onsubmit="handleFormSubmission(event)">
+                    <div class="form-group">
+                        <label for="diag-test-name">টেস্টের নাম:</label>
+                        <input type="text" id="diag-test-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="diag-center-name">ডায়াগনস্টিক সেন্টার:</label>
+                        <input type="text" id="diag-center-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="diag-price">খরচ (টাকা):</label>
+                        <input type="number" id="diag-price" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="diag-details">অন্যান্য বিবরণ:</label>
+                        <textarea id="diag-details"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-green form-submit-btn">ডায়াগনস্টিক ডেটা সেভ করুন</button>
+                    <p id="diagnostic-success-message" class="success-message" style="margin-top: 15px;"></p>
+                </form>
+            </div>
+        </div>
+
+        <div id="doctor-report-generator-page" class="page data-entry-form-layout">
+            <header class="data-entry-form-header">
+                <a href="#" onclick="showPage('data-entry-dashboard-page')" class="back-btn print-hide"><i class="fas fa-arrow-left"></i> ড্যাশবোর্ডে ফিরে যান</a>
+                <h1 class="form-title">📊 ডাক্তার রিপোর্ট জেনারেটর</h1>
+            </header>
+            <div class="data-entry-form-container print-hide">
+                <form id="doctor-report-form" class="data-form" onsubmit="generateDoctorReport(event)">
+                    <div class="form-group">
+                        <label for="report-doctor-name">ডাক্তারের নাম:</label>
+                        <input type="text" id="report-doctor-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="report-doctor-specialty">বিশেষত্ব/পদবি:</label>
+                        <input type="text" id="report-doctor-specialty" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="report-date">তারিখ:</label>
+                        <input type="date" id="report-date" required value="<%= new Date().toISOString().substring(0, 10) %>">
+                    </div>
+                    <div class="form-group">
+                        <label for="report-patient-count">রোগীর সংখ্যা (মোট ভিজিট):</label>
+                        <input type="number" id="report-patient-count" required min="1" value="10">
+                    </div>
+                    <div class="form-group">
+                        <label for="report-visit-fee">ভিজিট ফি (প্রতি রুগী, টাকা):</label>
+                        <input type="number" id="report-visit-fee" required min="100" value="700">
+                    </div>
+                    <button type="submit" class="btn btn-blue form-submit-btn">রিপোর্ট তৈরি করুন</button>
+                </form>
+            </div>
+
+            <div id="doctor-report-output" class="report-output-container">
+                <div class="no-report-message">
+                    <i class="fas fa-file-invoice"></i>
+                    <p>রিপোর্ট তৈরির জন্য উপরের ফর্মটি পূরণ করুন।</p>
+                </div>
+            </div>
+        </div>
+        <div id="visit-page" class="page">
+            <header class="main-header fixed-navbar"> 
+                <div class="top-bar dark-bg">
+                    <div class="top-bar-inner">
+                        <nav class="top-nav-new">
+                            <a href="#" onclick="handleTopNavClick('Berry Bap', 'এই বিভাগটি বর্তমানে রক্ষণাবেক্ষণের অধীনে রয়েছে। শীঘ্রই ফিরে দেখা হবে!')">Berry Bap</a>
+                            <a href="#" onclick="handleTopNavClick('Beee', 'Beee এর মাধ্যমে আমাদের সম্প্রদায়ের স্বাস্থ্য তথ্য দেখতে লগইন করুন।')">Beee</a>
+                            <a href="#" onclick="handleTopNavClick('Health Checkup & Insurance', 'স্বাস্থ্য পরীক্ষা এবং বীমা বিকল্পগুলি দেখতে একটি নতুন উইন্ডো খুলবে।')">Health Checkup & Insurance</a>
+                            <a href="#" onclick="handleTopNavClick('Get the app', 'আমাদের মোবাইল অ্যাপ ডাউনলোড করার জন্য আপনার ফোন নম্বরে একটি লিঙ্ক পাঠানো হবে।')">Get the app</a>
+                        </nav>
+                        <div class="top-info-new">
+                            <a href="#" class="btn top-btn-right support-box-btn" onclick="showPage('support-page')">Support</a>
+                            <a href="#" class="btn top-btn-right">tommos / SEO/SUE</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="secondary-nav-bar">
+                    <div class="secondary-nav-bar-inner">
+                        <div class="logo">
+                            <a href="#" onclick="showPage('entry-page')" class="logo-text-nightingale">Yash</a> 
+                        </div>
+                        <nav class="secondary-nav-links">
+                            <a href="#" class="secondary-nav-link-custom">Domiciliary Services</a>
+                            <a href="#" class="secondary-nav-link-custom">Diagnostic Home Services</a>
+                        </nav>
+                        <div class="secondary-info-links">
+                            <a href="#" onclick="handleTopNavClick('Get the app', 'আমাদের মোবাইল অ্যাপ ডাউনলোড করার জন্য আপনার ফোন নম্বরে একটি লিঙ্ক পাঠানো হবে।')">Get the app</a>
+                            <a href="#" class="btn top-btn-right support-box-btn" onclick="showPage('support-page')">Support</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tertiary-nav-bar">
+                    <div class="tertiary-nav-bar-inner">
+                        <div class="search-bar-new">
+                            <i class="fas fa-search"></i>
+                            <input type="text" placeholder="Search">
+                        </div>
+                        <nav class="tertiary-nav-links">
+                            <a href="#" class="tertiary-nav-link-custom">Find Docter</a>
+                            <a href="#" class="tertiary-nav-link-custom">Find Hospital</a>
+                            <a href="#" class="tertiary-nav-link-custom">Aster Nav</a>
+                            <a href="#" class="tertiary-nav-link-custom">Find Ambulance</a>
+                        </nav>
+                        <a href="#" class="btn login-register-btn" onclick="showPage('login-register-page')">Login/Register</a>
+                    </div>
+                </div>
+            </header>
+            
+            <div class="main-content">
+                <div class="service-cards">
+                    <div class="card"><div class="doctor-image-placeholder"></div><h3>Video Consultancy</h3><p>Consult with best doctors through video call.</p></div>
+                    <div class="card"><div class="doctor-image-placeholder"></div><h3>Chamber Appointment</h3><p>Book your appointment easily with few clicks.</p></div>
+                    <div class="card"><div class="doctor-image-placeholder"></div><h3>Doctor At Your Home</h3><p>Book a doctor to visit you at home.</p></div>
+                    <div class="card"><div class="doctor-image-placeholder"></div><h3>Ambulance Service</h3><p>24/7 Emergency Ambulance Service.</p></div>
+                    <div class="card"><div class="doctor-image-placeholder"></div><h3>Domiciliary Service</h3><p>Physiotherapy and Nurse service at home.</p></div>
+                </div>
+                
+                <div class="specialized-doctors-section">
+                    <div class="section-header">
+                        <div>
+                            <h2>Consult our top specialized doctors</h2>
+                            <p class="section-subtitle">Our doctors are ready to serve you 24/7</p>
+                        </div>
+                        <a href="#" class="view-all-link" onclick="showPage('specialist-page')">View all <i class="fas fa-angle-right"></i></a>
+                    </div>
+
+                    <div class="specialist-cards">
+                        <div class="specialist-card"><div class="specialist-icon-box"><i class="fas fa-baby"></i></div><h4>Gynecologist & Obstetrician</h4><a href="#" class="consult-now-link">Consult Now</a></div>
+                        <div class="specialist-card"><div class="specialist-icon-box"><i class="fas fa-pills"></i></div><h4>Medicine Specialist</h4><a href="#" class="consult-now-link">Consult Now</a></div>
+                        <div class="specialist-card"><div class="specialist-icon-box"><i class="fas fa-heartbeat"></i></div><h4>Cardiologist</h4><a href="#" class="consult-now-link">Consult Now</a></div>
+                        <div class="specialist-card"><div class="specialist-icon-box"><i class="fas fa-child"></i></div><h4>Pediatrician</h4><a href="#" class="consult-now-link">Consult Now</a></div>
+                        <div class="specialist-card"><div class="specialist-icon-box"><i class="fas fa-cut"></i></div><h4>General Surgeon</h4><a href="#" class="consult-now-link">Consult Now</a></div>
+                        <div class="specialist-card"><div class="specialist-icon-box"><i class="fas fa-head-side-mask"></i></div><h4>Otolaryngologists (ENT)</h4><a href="#" class="consult-now-link">Consult Now</a></div>
+                    </div>
+                </div>
+                
+                <div class="diagnostic-services-section">
+                    <div class="section-header">
+                        <div>
+                            <h2>Get timely, cost-effective, and high quality diagnostic care</h2>
+                            <p class="section-subtitle-diag">Book tests with top labs, get sample pick up, share reports with doctors online</p>
+                        </div>
+                        <a href="#" class="view-all-link" onclick="showPage('diagnostic-detail-page')">View all <i class="fas fa-angle-right"></i></a>
+                    </div>
+                    <div class="diagnostic-cards">
+                        <div class="diag-card" onclick="showDiagnosticDetails('ct-scan')">
+                            <div class="diag-icon-placeholder"><i class="fas fa-scanner"></i></div> 
+                            <h4>CT Scan</h4>
+                            <a href="#" class="check-prices-link" onclick="event.stopPropagation(); showDiagnosticDetails('ct-scan')">Check Prices</a>
+                        </div>
+                        <div class="diag-card" onclick="showDiagnosticDetails('blood-tests')">
+                            <div class="diag-icon-placeholder"><i class="fas fa-vial"></i></div> 
+                            <h4>Blood Tests</h4>
+                            <a href="#" class="check-prices-link" onclick="event.stopPropagation(); showDiagnosticDetails('blood-tests')">Check Prices</a>
+                        </div>
+                        <div class="diag-card" onclick="showDiagnosticDetails('endoscopy')">
+                            <div class="diag-icon-placeholder"><i class="fas fa-procedures"></i></div>
+                            <h4>Endoscopy</h4>
+                            <a href="#" class="check-prices-link" onclick="event.stopPropagation(); showDiagnosticDetails('endoscopy')">Check Prices</a>
+                        </div>
+                        <div class="diag-card" onclick="showDiagnosticDetails('ultrasound')">
+                            <div class="diag-icon-placeholder"><i class="fas fa-baby-carriage"></i></div> 
+                            <h4>Ultrasound</h4>
+                            <a href="#" class="check-prices-link" onclick="event.stopPropagation(); showDiagnosticDetails('ultrasound')">Check Prices</a>
+                        </div>
+                        <div class="diag-card" onclick="showDiagnosticDetails('x-ray')">
+                            <div class="diag-icon-placeholder"><i class="fas fa-bone"></i></div>
+                            <h4>X-Ray</h4>
+                            <a href="#" class="check-prices-link" onclick="event.stopPropagation(); showDiagnosticDetails('x-ray')">Check Prices</a>
+                        </div>
+                        <div class="diag-card" onclick="showDiagnosticDetails('microbiology')">
+                            <div class="diag-icon-placeholder"><i class="fas fa-microscope"></i></div>
+                            <h4>Microbiology</h4>
+                            <a href="#" class="check-prices-link" onclick="event.stopPropagation(); showDiagnosticDetails('microbiology')">Check Prices</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="home-visit-banner">
+                    <div class="banner-content">
+                        <h2>Need a Doctor to Visit your Loved One at Home?</h2>
+                        <h3 class="dial-number">Dial – 09611 530 530</h3>
+                        <a href="#" class="btn banner-request-btn">Request</a>
+                    </div>
+                </div>
+
+                <div id="app-download-section">
+                    <div class="app-content-box">
+                        <h2>Get all the benefits of Sasthyaseba through our mobile app</h2>
+                        <ul>
+                            <li>Book Appointment Online</li>
+                            <li>Video Call With Doctor</li>
+                            <li>Get Prescription Instantly</li>
+                        </ul>
+                        <p class="sms-title">Get the link to download mobile app</p>
+                        <div class="sms-input-group">
+                            <select id="country-code" class="country-code-select"></select>
+                            
+                            <input type="tel" placeholder="Mobile Number" class="phone-input">
+                            <button class="send-sms-btn">Send SMS</button>
+                        </div>
+                        <div class="app-store-links">
+                            <a href="#" class="app-link"><img src="./image/goo.png" alt="Google Play"></a>
+                            <a href="#" class="app-link"><img src="./image/app.jpg" alt="App Store"></a>
+                        </div>
+                    </div>
+                    <div class="app-image-box">
+                        <img src="./image/mobi;e.jpg" alt="Mobile App Screenshot" class="mobile-mockup-img"> 
+                    </div>
+                </div>
+                
+                <div id="contact-callback-section">
+                    <div class="contact-info-box">
+                        <h2>Need some advice from our experts?</h2>
+                        <h3>Request a call back now!</h3>
+                        <p>The quickest way to get in contact is to telephone: <span class="phone-numbers">09611 530 530, 01405 600 700</span></p>
+                    </div>
+                    <div class="contact-form-box">
+                        <p class="form-instruction">Please fill out this quick form and we'll get back to you within few hours!</p>
+                        <form class="callback-form">
+                            <div class="input-field">
+                                <input type="text" placeholder="Enter your name" required>
+                            </div>
+                            <div class="input-field phone-input-callback">
+                                <div class="country-code-display">+880</div>
+                                <input type="tel" placeholder="Mobile Number" required>
+                            </div>
+                            <button type="submit" class="btn call-me-back-btn">Call Me Back</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <footer id="main-footer">
+                <div class="footer-container">
+                    
+                    <div class="footer-col col-info">
+                        <div class="footer-logo">NIGHTINGALE<span>Seba</span><i class="fas fa-heartbeat"></i></div>
+                        <p class="mission-text">We are on a mission to make quality healthcare affordable and accessible for the people of Bangladesh.</p>
+                        
+                        <div class="social-links">
+                            <a href="#"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fab fa-youtube"></i></a>
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                            <a href="#"><i class="fas fa-heart"></i></a>
+                        </div>
+                        
+                        <div class="footer-contact">
+                            <p><i class="fas fa-phone"></i> 09611 530 530</p>
+                            <p><i class="fas fa-ambulance"></i> 01405 600 700</p>
+                        </div>
+                    </div>
+
+                    <div class="footer-col">
+                        <h3>NIGHTINGALE08gmail.com</h3>
+                        <ul>
+                            <li><a href="#">About Us</a></li>
+                            <li><a href="#">Contact</a></li>
+                            <li><a href="#">Services</a></li>
+                            <li><a href="#">Blog</a></li>
+                            <li><a href="#">Diseases and Conditions</a></li>
+                            <li><a href="#">Privacy Policy</a></li>
+                            <li><a href="#">Terms & Conditions</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-col">
+                        <h3>For Patients</h3>
+                        <ul>
+                            <li><a href="#">FAQ's</a></li>
+                            <li><a href="#">Find Doctors</a></li>
+                            <li><a href="#">Find Ambulances</a></li>
+                            <li><a href="#">Privacy Policy</a></li>
+                            <li><a href="#">Terms & Conditions</a></li>
+                            <li><a href="#">Patient No-Show Policy</a></li>
+                            <li><a href="#">Cancellation & Refund Policy</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="footer-col">
+                        <h3>For Doctors/Organisations</h3>
+                        <ul>
+                            <li><a href="#">Login as Doctor</a></li>
+                            <li><a href="#">Work with Us</a></li>
+                            <li><a href="#">Privacy Policy</a></li>
+                            <li><a href="#">Terms & Conditions</a></li>
+                            <li><a href="#">Patient No-Show Policy</a></li>
+                            <li><a href="#">Account Deletion</a></li>
+                        </ul>
+                    </div>
+
+                </div>
+
+                <div class="footer-bottom">
+                    <div class="payment-options">
+                        <span>Pay With:</span>
+                        <span class="payment-logo-text visa">VISA</span> 
+                        <span class="payment-logo-text mastercard">MasterCard</span>
+                        <span class="payment-logo-text amex">AMEX</span>
+                        <span class="payment-logo-text bkash">bKash</span>
+                        <span class="payment-logo-text nagad">Nagad</span>
+                        <span class="payment-logo-text rocket">Rocket</span>
+                    </div>
+                    <p class="copyright">Copyright &copy; 2022 Sasthya Seba Limited. All rights reserved.</p>
+                </div>
+
+            </footer>
+        </div>
+        
+        <div id="specialist-page" class="page specialist-page-layout">
+            <div class="specialist-page-header">
+                <a href="#" onclick="showPage('visit-page')" class="back-btn"><i class="fas fa-arrow-left"></i> ভিজিট পেজে ফিরে যান</a>
+                <h1 class="page-title">বিশেষজ্ঞ ডাক্তারদের বিস্তারিত ডিরেক্টরি</h1>
+            </div>
+            
+            <div class="specialist-main-content">
+                <h2 class="section-heading">🏥 বিশেষজ্ঞ বিভাগ এবং বিস্তারিত তথ্য</h2>
+
+                <div class="specialty-detail-card">
+                    <div class="icon-box"><i class="fas fa-baby"></i></div>
+                    <h3>Gynecologist & Obstetrician (স্ত্রীরোগ বিশেষজ্ঞ)</h3>
+                    <h4>📍 কখন তাদের কাছে যাবেন? (রোগের লক্ষণ)</h4>
+                    <ul>
+                        <li>**মাসিক চক্রে অস্বাভাবিকতা** (অনিয়মিত পিরিয়ড) বা গুরুতর তলপেটে ব্যথা হলে।</li>
+                        <li>**গর্ভধারণের পরিকল্পনা** বা গর্ভাবস্থায় নিয়মিত চেকআপের জন্য।</li>
+                        <li>মেনোপজ বা হরমোনজনিত সমস্যা হলে।</li>
+                    </ul>
+                    <h4>🛡️ রোগ থেকে দূরে থাকার জন্য প্রতিরোধ:</h4>
+                    <p>নিয়মিত প্যাপ স্মিয়ার (Pap Smear) পরীক্ষা করা, নিরাপদ অভ্যাস বজায় রাখা এবং সুষম খাদ্যাভ্যাস অনুসরণ করা উচিত।</p>
+                </div>
+                <div class="specialty-detail-card">
+                    <div class="icon-box"><i class="fas fa-pills"></i></div>
+                    <h3>Medicine Specialist (অভ্যন্তরীণ ঔষধ বিশেষজ্ঞ)</h3>
+                    <h4>📍 কখন তাদের কাছে যাবেন? (রোগের লক্ষণ)</h4>
+                    <ul>
+                        <li>**দীর্ঘস্থায়ী জ্বর, ক্লান্তি** বা সাধারণ অসুস্থতা যা সহজে সারছে না।</li>
+                        <li>**ডায়াবেটিস, উচ্চ রক্তচাপ, থাইরয়েড** বা অন্য কোনো দীর্ঘমেয়াদী রোগ ব্যবস্থাপনার জন্য।</li>
+                        <li>অজানা স্বাস্থ্য সমস্যা বা রোগের প্রাথমিক রোগ নির্ণয় এবং চিকিৎসার জন্য।</li>
+                    </ul>
+                    <h4>🛡️ রোগ থেকে দূরে থাকার জন্য প্রতিরোধ:</h4>
+                    <p>সুষম খাবার, নিয়মিত ব্যায়াম এবং সময়মতো টিকা নেওয়া। বার্ষিক স্বাস্থ্য পরীক্ষা করানো এবং ধূমপান পরিহার করা জরুরি।</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="diagnostic-detail-page" class="page diagnostic-page-layout">
+            <div class="diagnostic-page-header">
+                <a href="#" onclick="showPage('visit-page')" class="back-btn"><i class="fas fa-arrow-left"></i> ভিজিট পেজে ফিরে যান</a>
+                <h1 class="page-title">ডায়াগনস্টিক সেবার বিস্তারিত তথ্য</h1>
+            </div>
+
+            <div class="diagnostic-main-content">
+                <h2 class="section-heading">🔬 আমাদের সেরা ডায়াগনস্টিক পরীক্ষাগুলি</h2>
+
+                <div id="diagnostic-service-list">
+                    <div class="diagnostic-detail-card" id="ct-scan-details">
+                        <div class="icon-box"><i class="fas fa-scanner"></i></div>
+                        <h3>CT Scan (সিটি স্ক্যান)</h3>
+                        <h4>পরীক্ষাটি কেন করা হয়?</h4>
+                        <ul>
+                            <li>শরীরের অভ্যন্তরীণ অঙ্গ, রক্তনালী এবং হাড়ের বিস্তারিত ক্রস-সেকশনাল চিত্র পেতে।</li>
+                            <li>টিউমার, সংক্রমণ, অভ্যন্তরীণ আঘাত বা রক্তক্ষরণের মতো সমস্যা নির্ণয়ের জন্য।</li>
+                        </ul>
+                        <div class="price-and-doctor-info">
+                            <div class="price-box">
+                                <h4>💰 আনুমানিক মূল্য:</h4>
+                                <p class="price-tag">৳ 4,500 - ৳ 8,000</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="diagnostic-detail-card" id="blood-tests-details">
+                        <div class="icon-box"><i class="fas fa-vial"></i></div>
+                        <h3>Blood Tests (রক্ত পরীক্ষা)</h3>
+                        <h4>পরীক্ষাটি কেন করা হয়?</h4>
+                        <ul>
+                            <li>ডায়াবেটিস, কোলেস্টেরল, থাইরয়েড, লিভার ও কিডনি ফাংশনের মতো প্রাথমিক স্বাস্থ্য সূচকগুলি পরিমাপ করার জন্য।</li>
+                        </ul>
+                        <div class="price-and-doctor-info">
+                            <div class="price-box">
+                                <h4>💰 আনুমানিক মূল্য:</h4>
+                                <p class="price-tag">৳ 300 - ৳ 3,500</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="diagnostic-detail-card" id="endoscopy-details">
+                        <div class="icon-box"><i class="fas fa-procedures"></i></div>
+                        <h3>Endoscopy (এন্ডোস্কোপি)</h3>
+                        <h4>বিবরণ:</h4>
+                        <p>হজমনালী বা অন্যান্য অভ্যন্তরীণ গহ্বরগুলির মধ্যে সমস্যা নির্ণয় করার জন্য।</p>
+                        <div class="price-and-doctor-info">
+                            <div class="price-box">
+                                <h4>💰 আনুমানিক মূল্য:</h4>
+                                <p class="price-tag">৳ 6,000 - ৳ 12,000</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div id="login-register-page" class="page login-register-layout">
+            <div class="login-register-container">
+                <a href="#" onclick="showPage('visit-page')" class="back-to-home-btn"><i class="fas fa-arrow-left"></i> হোম পেজে ফিরে যান</a>
+
+                <div class="auth-box">
+                    <div class="auth-tabs">
+                        <button id="login-tab-btn" class="tab-btn active" onclick="showForm('login-form')">
+                            <i class="fas fa-sign-in-alt"></i> Login
+                        </button>
+                        <button id="register-tab-btn" class="tab-btn" onclick="showForm('register-form')">
+                            <i class="fas fa-user-plus"></i> Register
+                        </button>
+                    </div>
+
+                    <form id="login-form" class="auth-form active" onsubmit="alert('Login functionality not implemented yet!'); return false;">
+                        <h2>স্বাগতম!</h2>
+                        <div class="input-group">
+                            <label for="login-email">ইমেল/ফোন</label>
+                            <input type="text" id="login-email" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="login-password">পাসওয়ার্ড</label>
+                            <input type="password" id="login-password" required>
+                        </div>
+                        <button type="submit" class="auth-submit-btn btn-green">প্রবেশ করুন</button>
+                        <p class="switch-form-text">নতুন ব্যবহারকারী? <a href="#" onclick="showForm('register-form')">নিবন্ধন করুন</a></p>
+                    </form>
+
+                    <form id="register-form" class="auth-form" onsubmit="alert('Registration functionality not implemented yet!'); return false;">
+                        <h2>নতুন অ্যাকাউন্ট তৈরি করুন</h2>
+                        <div class="input-group">
+                            <label for="register-name">পুরো নাম</label>
+                            <input type="text" id="register-name" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="register-password">পাসওয়ার্ড তৈরি করুন</label>
+                            <input type="password" id="register-password" required>
+                        </div>
+                        <button type="submit" class="auth-submit-btn btn-blue">নিবন্ধন সম্পন্ন করুন</button>
+                        <p class="switch-form-text">ইতিমধ্যে একটি অ্যাকাউন্ট আছে? <a href="#" onclick="showForm('login-form')">লগইন করুন</a></p>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <div id="support-page" class="page support-page-layout">
+            <div class="support-page-header">
+                <a href="#" onclick="showPage('visit-page')" class="back-btn"><i class="fas fa-arrow-left"></i> ভিজিট পেজে ফিরে যান</a>
+                <h1 class="page-title">সহায়তা এবং সমর্থন (Support) কেন্দ্র</h1>
+            </div>
+            
+            <div class="support-main-content">
+                <h2 class="section-heading">কিভাবে আমরা আপনাকে সাহায্য করতে পারি?</h2>
+                
+                <div class="support-card">
+                    <h3>📞 সরাসরি যোগাযোগ</h3>
+                    <p>জরুরী সহায়তার জন্য, আপনি আমাদের হটলাইনে ২৪/৭ যোগাযোগ করতে পারেন:</p>
+                    <ul>
+                        <li><i class="fas fa-phone"></i> হটলাইন (সাধারণ প্রশ্ন): 09611 530 530</li>
+                        <li><i class="fas fa-ambulance"></i> জরুরী অ্যাম্বুলেন্স সেবা: 01405 600 700</li>
+                    </ul>
+                </div>
+                
+                <div class="support-card">
+                    <h3>📧 ইমেল সাপোর্ট</h3>
+                    <p>আপনার বিলিং, অ্যাপয়েন্টমেন্ট অথবা অন্য কোনো জটিল সমস্যার জন্য আমাদের ইমেল করুন। support@sasthyaseba.com</p>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    
+    <script src="./script.js"></script>
+</body>
+</html>
